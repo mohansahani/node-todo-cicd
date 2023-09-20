@@ -15,5 +15,4 @@ Run these commands:
 
 or Run by docker compose
 
-testing the jenkins pipeline
-
+Change the setting from push to send me everything 
