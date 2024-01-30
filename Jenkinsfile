@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'dev-agent' }
+    agent { label 'dev' }
     
     stages{
         stage('Code'){
@@ -8,18 +8,18 @@ pipeline {
             }
         }
         
-        stage('Build and Test'){
+        stage('Buils and Test'){
             steps {
-                sh 'docker build . -t mohansahani/node-todo-app:latest' 
+                sh 'docker build . -t mohansahani/node-todo-app-new:latest'
             }
         }
         
         stage('Login and Push Image'){
             steps {
-                echo 'Login into docker hub and pushing the image'
-                withCredentials([usernamePassword(credentialsId:'dockerhub',passwordVariable:'dockerHubPassword', usernameVariable:'dockerHubUsername')]){
-                sh "docker login -u ${env.dockerHubUsername} -p ${env.dockerHubPassword}"
-                sh "docker push mohansahani/node-todo-app:latest"
+                echo 'Login to docker hub and pushing image..'
+                withCredentials([usernamePassword(credentialsId:'dockerHub',passwordVariable:'dockerHubPassword',usernameVariable:'dockerHubUser')]){
+                    sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
+                    sh "docker push mohansahani/node-todo-app-new:latest"
                 }
             }
         }
@@ -29,6 +29,7 @@ pipeline {
                 sh 'docker-compose down && docker-compose up -d'
             }
         }
+        
         
     }
 }
